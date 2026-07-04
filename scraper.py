@@ -16,6 +16,6 @@ def fetch_articles():
 
         articles.extend(data["articles"])
         url = data["next_page"]
-        print(f"Fetched {len(data['articles'])} articles, next page: {url}")
+        #print(f"Fetched {len(data['articles'])} articles, next page: {url}")
 
     return articles
