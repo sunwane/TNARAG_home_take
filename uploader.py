@@ -37,18 +37,20 @@ def init_knowledge_base():
 
     print(file_search_store.name)
 
-def upload_article(article, filepath):
+def upload_article(article, filepath, previous_record=None):
     metadata = load_metadata()
     article_id = str(article["id"])
 
     if not TARGET_STORE_NAME:
         print("✗ Error: Knowledge base store is not initialized.")
-        return
+        return "failed"
 
     current_record = metadata.get(article_id, {})
     if current_record.get("updated_at") == article["updated_at"] and current_record.get("embedded_rag"):
         print(f"✓ Skip (Already in store): {article['title']}")
-        return
+        return "skipped"
+
+    status = "added" if not previous_record else "updated"
 
     print(f"Uploading and embedding: {article['title']}...")
 
@@ -67,6 +69,8 @@ def upload_article(article, filepath):
 
         upsert_article_metadata(article, filepath, embedded_rag=True)
         print(f"   -> ✓ Successfully embedded!")
+        return status
 
     except Exception as e:
         print(f"   -> ✗ Error uploading file: {e}")
+        return "failed"

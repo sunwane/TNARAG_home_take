@@ -1,5 +1,5 @@
 from scraper import fetch_articles
-from markdown import save_article
+from markdown import load_metadata, save_article
 from uploader import upload_article
 from uploader import init_knowledge_base
 
@@ -18,10 +18,12 @@ def main():
     skipped = 0
 
     for article in articles:
+        metadata = load_metadata()
+        previous_record = metadata.get(str(article["id"]), {})
 
         filepath = save_article(article)
 
-        status = upload_article(article, filepath)
+        status = upload_article(article, filepath, previous_record=previous_record)
 
         if status == "added":
             added += 1

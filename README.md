@@ -32,7 +32,10 @@ Copy `.env.example` to `.env` and fill in your values:
 GEMINI_API_KEY=your_api_key_here
 STORE_ID=your_store_id_here
 OUTPUT_DIR=output
+METADATA_FILE=state/metadata.json
 ```
+
+If you deploy on Railway, point `METADATA_FILE` to a path inside a mounted volume so the skip state survives container restarts.
 
 If you do not already have a File Search Store, you can temporarily uncomment `init_knowledge_base()` in `main.py`, run the ingestion once, then copy the printed store name into `STORE_ID`.
 

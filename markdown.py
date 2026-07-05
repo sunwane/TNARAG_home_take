@@ -12,7 +12,7 @@ converter.body_width = 0
 converter.ignore_tables = False
 
 OUTPUT_DIR = os.getenv("OUTPUT_DIR", "output")
-METADATA_FILE = "metadata.json"
+METADATA_FILE = os.getenv("METADATA_FILE", "metadata.json")
 
 def slugify(title):
     title = title.lower()
@@ -32,6 +32,10 @@ def load_metadata():
 
 
 def save_metadata(metadata):
+    metadata_dir = os.path.dirname(METADATA_FILE)
+    if metadata_dir:
+        os.makedirs(metadata_dir, exist_ok=True)
+
     with open(METADATA_FILE, "w", encoding="utf-8") as file_handle:
         json.dump(metadata, file_handle, indent=4, ensure_ascii=False)
 
