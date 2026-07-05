@@ -20,3 +20,4 @@ env/
 
 #output files
 output/
+metadata.json
