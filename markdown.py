@@ -53,6 +53,10 @@ def upsert_article_metadata(article, filepath, embedded_rag=False):
 
 def save_article(article):
     markdown = converter.handle(article["body"])
+    metadata = load_metadata()
+    article_id = str(article["id"])
+    current_record = metadata.get(article_id, {})
+    embedded_rag = current_record.get("embedded_rag", False) if current_record.get("updated_at") == article["updated_at"] else False
 
     content = f"""# {article["title"]}
 
@@ -76,6 +80,6 @@ Last Updated:
     with open(filepath, "w", encoding="utf-8") as file_handle:
         file_handle.write(content)
 
-    upsert_article_metadata(article, filepath, embedded_rag=False)
+    upsert_article_metadata(article, filepath, embedded_rag=embedded_rag)
 
     return filepath

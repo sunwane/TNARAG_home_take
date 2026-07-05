@@ -13,6 +13,8 @@ load_dotenv()
 
 API_KEY = os.getenv("GEMINI_API_KEY")
 TARGET_STORE_NAME = os.getenv("STORE_ID")
+if TARGET_STORE_NAME and not TARGET_STORE_NAME.startswith("fileSearchStores/"):
+    TARGET_STORE_NAME = f"fileSearchStores/{TARGET_STORE_NAME}"
 
 client = genai.Client(
     api_key=API_KEY,
